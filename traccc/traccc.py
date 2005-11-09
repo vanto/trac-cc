@@ -196,8 +196,8 @@ class CruiseControlPlugin(Component):
     def process_request(self, req):
         add_stylesheet(req, 'traccc/traccc.css')
 
-        cc_id = req.args.get('log', 'overview')
-	#self.env.log.debug(cc_id)
+        cc_id = req.args.get('log', 'overview').replace('log','',1)
+	self.env.log.debug(cc_id)
         req.hdf['title'] = 'CruiseControl'
         req.hdf['cc.baseLink'] = self.env.href.cruisecontrol()
 
