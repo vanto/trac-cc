@@ -1,0 +1,71 @@
+.white { color:#FFFFFF }
+
+.index { background-color:#FFFFFF }
+.index-passed { color:#004400 }
+.index-failed { color:#FF0000; font-weight:bold }
+.index-header { font-weight:bold }
+
+.tab-table { margin: 0em 0em 0.5em 0em; }
+.tabs {font-size:8pt; color:#000000; font-weight:bold; padding: 0em 2em; background-color:#EEEEEE; }
+.tabs-link { color:#000000; text-decoration:none; }
+.tabs-link:visited { color:#000000; text-decoration:none; }
+.tabs-selected {font-size:8pt; color:#000000; font-weight:bold; padding: 0em 2em; }
+.tabs-selected { border: inset; }
+
+table.header {font-size:10pt; color:#000000; }
+table.header th { text-align:left; vertical-align:top; white-space:nowrap; }
+table.header th.big { font-size:12pt; }
+
+.modifications-data {font-size:8pt; color:#000000; }
+.modifications-sectionheader {font-size:10pt; background: #f7f7f7; color: #000; border: 1px solid black; }
+.modifications-oddrow { background-color:#CCCCCC }
+.modifications-evenrow { background-color:#FFFFCC }
+
+.changelists-oddrow { background-color:#CCCCCC }
+.changelists-evenrow { background-color:#FFFFCC }
+.changelists-file-spacer { background-color:#FFFFFF }
+.changelists-file-evenrow { background-color:#EEEEEE }
+.changelists-file-oddrow { background-color:#FFFFEE }
+.changelists-file-header { background-color:#666666; font-size:8pt; color:#FFFFFF; }
+
+.compile-data {font-size:8pt; color:#000000; }
+.compile-error-data { font-size:8pt; color:#FF0000; }
+.compile-warn-data { font-size:8pt; color:#CC9900; }
+.compile-sectionheader {font-size:10pt; background: #f7f7f7; color: #000; border: 1px solid black;}
+
+.distributables-data { font-size:8pt; color:#000000; }
+.distributables-sectionheader {font-size:10pt; background: #f7f7f7; color: #000; border: 1px solid black; }
+.distributables-oddrow { background-color:#CCCCCC }
+
+.unittests-sectionheader {font-size:10pt; background: #f7f7f7; color: #000; border: 1px solid black;}
+.unittests-oddrow { background-color:#CCCCCC }
+.unittests-data { font-size:8pt; color:#000000; }
+.unittests-error { font-size:8pt; color:#901090; }
+.unittests-failure { font-size:8pt; color:#FF0000; }
+
+.checkstyle-oddrow { background-color:#CCCCCC }
+.checkstyle-data { font-size:8pt; color:#000000; }
+.checkstyle-warning { font-size:8pt; color:#000000; }
+.checkstyle-error { font-size:8pt; color:#FF0000; }
+.checkstyle-fileheader {font-size:10pt; font-weight:bold; background: #f7f7f7; color: #000; border: 1px solid black;}
+.checkstyle-sectionheader {font-size:10pt; background: #f7f7f7; color: #000; border: 1px solid black;}
+
+.macker-oddrow { background-color:#CCCCCC }
+.macker-data {font-size:8pt; color:#000000; }
+.macker-data-error {font-size:8pt; color:#FF0000; }
+.macker-sectionheader {font-size:10pt; background: #f7f7f7; color: #000; border: 1px solid black;}
+
+a img { border: 0 }
+
+.hidden { visibility: hidden }
+
+.config-sectionheader { background-color:#CCCCCC; font-size:10pt; color:#FFFFFF; }
+.config-resultmsg { font-size:10pt; color:#FF0000; }
+
+.compile-sectionheader td {
+  border: 1px solid black;
+}
+
+dt.ccbuild-successful, dt.ccbuild-successful a { background-image: url(ccsuccess_t.gif) !important }
+dt.ccbuild-failed, dt.ccbuild-failed a { background-image: url(ccfailed_t.gif) !important }
+
