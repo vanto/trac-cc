@@ -26,6 +26,7 @@ from trac.web.api import absolute_url
 import urllib, os, time
 
 class CruiseControlPlugin(Component):
+    """A plugin to integrate Cruise Control into Trac"""
     implements(INavigationContributor, IRequestHandler, ITemplateProvider, ITimelineEventProvider)
 
     cc_cs = """
