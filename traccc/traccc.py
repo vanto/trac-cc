@@ -22,6 +22,7 @@ from trac.web.chrome import INavigationContributor, ITemplateProvider, add_style
 from trac.Timeline import ITimelineEventProvider
 from trac.web.main import IRequestHandler
 from trac.web.api import absolute_url
+from trac.util import Markup
 
 import urllib, os, time
 
@@ -102,8 +103,7 @@ class CruiseControlPlugin(Component):
     def get_active_navigation_item(self, req):
         return 'cruisecontrol'
     def get_navigation_items(self, req):
-        yield 'mainnav', 'cruisecontrol', '<a href="%s">CruiseControl</a>' \
-                                       % self.env.href.cruisecontrol()
+        yield 'mainnav', 'cruisecontrol', Markup('<a href="%s">CruiseControl</a>' % self.env.href.cruisecontrol())
     # ITemplateProvider methods
     def get_templates_dirs(self):
         """
@@ -227,7 +227,7 @@ class CruiseControlPlugin(Component):
                 style = libxslt.parseStylesheetDoc(styledoc)
                 doc = libxml2.parseFile(ccpath + filename)
                 result = style.applyStylesheet(doc, None)
-                req.hdf['cc.html_result'] = style.saveResultToString(result)
+                req.hdf['cc.html_result'] = Markup(style.saveResultToString(result))
                 style.freeStylesheet()
                 doc.freeDoc()
                 result.freeDoc()
