@@ -139,7 +139,7 @@ class CruiseControlPlugin(Component):
             if match.group(1):
                 if match.group(1) != '':
 		    req.args['log'] = match.group(1)
-	    if req.args.get('log','') != '':
+	    if req.args.get('log','') == '':
 	    	req.args['log'] = 'overview'
             return 1
 
