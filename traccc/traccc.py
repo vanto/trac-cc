@@ -21,7 +21,7 @@ from trac.core import *
 from trac.web.chrome import INavigationContributor, ITemplateProvider, add_stylesheet
 from trac.Timeline import ITimelineEventProvider
 from trac.web.main import IRequestHandler
-from trac.web.api import absolute_url
+#from trac.web.api import absolute_url
 from trac.util import Markup
 
 import urllib, os, time
