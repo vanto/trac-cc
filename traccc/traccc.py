@@ -39,7 +39,7 @@ class CruiseControlPlugin(Component):
     var:cc.baseLink ?>">Overview</a></li>
  </ul>
 </div>
-<div id="content" class="cc<?cs if:cc.page ?>_<?cs var:cc.page ?><?cs /if ?>"
+<div id="content" class="cc<?cs if:cc.page ?>_<?cs var:cc.page ?><?cs /if ?>">
 <h1>CruiseControl Status Page</h1>
 <p><?cs var:cc.buildstatus ?></p>
 <h2>Builds</h2>
@@ -65,7 +65,7 @@ class CruiseControlPlugin(Component):
     var:cc.baseLink ?>">Overview</a></li>
  </ul>
 </div>
-<div id="content" class="cc<?cs if:cc.page ?>_<?cs var:cc.page ?><?cs /if ?>"
+<div id="content" class="cc<?cs if:cc.page ?>_<?cs var:cc.page ?><?cs /if ?>">
 <h1>CruiseControl Details Page</h1>
 <p>
    <?cs if:cc.build.successful ?><img src="<?cs var:chrome.href ?>/traccc/ccsuccess.gif" border="0"/> 
