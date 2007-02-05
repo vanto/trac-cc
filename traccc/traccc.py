@@ -23,6 +23,7 @@ from trac.Timeline import ITimelineEventProvider
 from trac.web.main import IRequestHandler
 #from trac.web.api import absolute_url
 from trac.util import Markup
+from trac.util.text import to_unicode
 
 import urllib, os, time
 
@@ -227,7 +228,7 @@ class CruiseControlPlugin(Component):
                 style = libxslt.parseStylesheetDoc(styledoc)
                 doc = libxml2.parseFile(ccpath + filename)
                 result = style.applyStylesheet(doc, None)
-                req.hdf['cc.html_result'] = Markup(style.saveResultToString(result))
+                req.hdf['cc.html_result'] = Markup(to_unicode(style.saveResultToString(result)))
                 style.freeStylesheet()
                 doc.freeDoc()
                 result.freeDoc()
