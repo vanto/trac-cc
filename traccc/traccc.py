@@ -206,7 +206,7 @@ class CruiseControlPlugin(Component):
         ccstatus = self.config.get('cruisecontrol', 'buildstatusfile')
 
 	if cc_id == 'overview':
-                f = urllib.urlopen(ccpath + ccstatus)
+                f = urllib.urlopen(urllib.pathname2url(ccpath + ccstatus))
                 req.hdf['cc.buildstatus'] = f.read()
                 req.hdf['cc.builds'] = self.getBuilds(ccpath, ccstatus)
                 template = req.hdf.parse(self.cc_cs)
