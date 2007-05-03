@@ -22,7 +22,7 @@ from trac.web.chrome import INavigationContributor, ITemplateProvider, add_style
 from trac.Timeline import ITimelineEventProvider
 from trac.web.main import IRequestHandler
 from trac.util import Markup
-
+from trac.perm import IPermissionRequestor, PermissionSystem
 from trac.util.text import to_unicode
 
 import urllib, os, time, pkg_resources
@@ -32,7 +32,7 @@ class CruiseControlPlugin(Component):
 
     See [https://oss.werkbold.de/trac-cc/ http://oss.werkbold.de/trac-cc] for details.
     """
-    implements(INavigationContributor, IRequestHandler, ITemplateProvider, ITimelineEventProvider)
+    implements(INavigationContributor, IRequestHandler, ITemplateProvider, ITimelineEventProvider, IPermissionRequestor)
 
     __datePatternLength = 14
     __prefixLength = 3
@@ -57,9 +57,11 @@ class CruiseControlPlugin(Component):
 
     # INavigationContributor methods
     def get_active_navigation_item(self, req):
-        return 'cruisecontrol'
+        if req.perm.has_permission('CRUISECONTROL_VIEW'): 
+            return 'cruisecontrol'
     def get_navigation_items(self, req):
-        yield 'mainnav', 'cruisecontrol', Markup('<a href="%s">CruiseControl</a>' % self.env.href.cruisecontrol())
+        if req.perm.has_permission('CRUISECONTROL_VIEW'): 
+            yield 'mainnav', 'cruisecontrol', Markup('<a href="%s">CruiseControl</a>' % self.env.href.cruisecontrol())
     # ITemplateProvider methods
     def get_templates_dirs(self):
         """
@@ -114,7 +116,7 @@ class CruiseControlPlugin(Component):
 
    # ITimelineEventProvider methods
     def get_timeline_filters(self, req):
-        if req.perm.has_permission('CHANGESET_VIEW'):
+        if req.perm.has_permission('CRUISECONTROL_VIEW'):
             yield ('ccbuild', 'CruiseControl Builds')
 
     def get_timeline_events(self, req, start, stop, filters):
@@ -142,6 +144,8 @@ class CruiseControlPlugin(Component):
 
 
     def process_request(self, req):
+        req.perm.assert_permission('CRUISECONTROL_VIEW')
+        
         add_stylesheet(req, 'traccc/traccc.css')
 
         cc_id = req.args.get('log', 'overview').replace('log','',1)
@@ -182,3 +186,6 @@ class CruiseControlPlugin(Component):
                     return 'traccc_details.cs', None
 
         raise TracError('TracCC has not been properly configured.')
+
+    def get_permission_actions(self): 
+        return ['CRUISECONTROL_VIEW'] 
