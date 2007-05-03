@@ -22,6 +22,7 @@ from trac.web.chrome import INavigationContributor, ITemplateProvider, add_style
 from trac.Timeline import ITimelineEventProvider
 from trac.web.main import IRequestHandler
 from trac.util import Markup
+
 from trac.util.text import to_unicode
 
 import urllib, os, time, pkg_resources
@@ -129,14 +130,13 @@ class CruiseControlPlugin(Component):
                     title = 'CruiseControl Build:' + b['label']
                     date = time.mktime(b['datetime'])
                     author = 'unknown'
-                    from trac.util import format_datetime
+
                     if b['successful']:
-                        message = 'Build was succesful on '
+                        message = 'Build was succesful'
                         kind = 'ccbuild-successful'
                     else:
-                        message = 'Build failed on '
+                        message = 'Build failed'
                         kind = 'ccbuild-failed'
-                    message = message + format_datetime(b['datetime'])
 
                     yield (kind, href, title, date, author, message)
 
