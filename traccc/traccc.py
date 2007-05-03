@@ -21,63 +21,17 @@ from trac.core import *
 from trac.web.chrome import INavigationContributor, ITemplateProvider, add_stylesheet
 from trac.Timeline import ITimelineEventProvider
 from trac.web.main import IRequestHandler
-#from trac.web.api import absolute_url
 from trac.util import Markup
 from trac.util.text import to_unicode
 
-import urllib, os, time
+import urllib, os, time, pkg_resources
 
 class CruiseControlPlugin(Component):
-    """A plugin to integrate Cruise Control into Trac"""
+    """A plugin to integrate Cruise Control into Trac
+
+    See [https://oss.werkbold.de/trac-cc/ http://oss.werkbold.de/trac-cc] for details.
+    """
     implements(INavigationContributor, IRequestHandler, ITemplateProvider, ITimelineEventProvider)
-
-    cc_cs = """
-<?cs include "header.cs"?>
-<div id="ctxtnav" class="nav">
- <h2>About Navigation</h2>
- <ul>
-  <li class="first last"><a href="<?cs
-    var:cc.baseLink ?>">Overview</a></li>
- </ul>
-</div>
-<div id="content" class="cc<?cs if:cc.page ?>_<?cs var:cc.page ?><?cs /if ?>">
-<h1>CruiseControl Status Page</h1>
-<p><?cs var:cc.buildstatus ?></p>
-<h2>Builds</h2>
-<p>
-<?cs each:build = cc.builds ?>
-   <?cs if:build.successful ?><img src="<?cs var:chrome.href ?>/traccc/ccsuccess.gif" border="0"/> 
-   <?cs else ?><img src="<?cs var:chrome.href ?>/traccc/ccerror.gif" border="0"/>
-   <?cs /if ?>
-   <a href="<?cs var:cc.baseLink ?>/<?cs var:build.id ?>"><?cs var:build.datetimeStr ?> <?cs var:build.label ?></a><br/>
-<?cs /each ?>
-</p>
-</div>
-<?cs include "footer.cs"?>
-""" # cc_cs
-
-
-    cc_details_cs = """
-<?cs include "header.cs"?>
-<div id="ctxtnav" class="nav">
- <h2>About Navigation</h2>
- <ul>
-  <li class="first last"><a href="<?cs
-    var:cc.baseLink ?>">Overview</a></li>
- </ul>
-</div>
-<div id="content" class="cc<?cs if:cc.page ?>_<?cs var:cc.page ?><?cs /if ?>">
-<h1>CruiseControl Details Page</h1>
-<p>
-   <?cs if:cc.build.successful ?><img src="<?cs var:chrome.href ?>/traccc/ccsuccess.gif" border="0"/> 
-   <?cs else ?><img src="<?cs var:chrome.href ?>/traccc/ccerror.gif" border="0"/>
-   <?cs /if ?>
-   <b>Build from <?cs var:cc.build.datetimeStr ?> <?cs var:cc.build.label ?></b>
-</p>
-<?cs var:cc.html_result ?>
-</div>
-<?cs include "footer.cs"?>
-""" # cc_details_cs
 
     __datePatternLength = 14
     __prefixLength = 3
@@ -111,8 +65,7 @@ class CruiseControlPlugin(Component):
         Return the absolute path of the directory containing the provided
         ClearSilver templates.
         """
-        return [self.env.get_templates_dir(),
-                self.config.get('trac', 'templates_dir')]
+        return [pkg_resources.resource_filename(__name__, 'templates')]
 
     def get_htdocs_dirs(self):
         """
@@ -126,22 +79,18 @@ class CruiseControlPlugin(Component):
         The `abspath` is the absolute path to the directory containing the
         resources on the local file system.
         """
-        from pkg_resources import resource_filename
-        return [('traccc', resource_filename(__name__, 'htdocs'))]
+        return [('traccc', pkg_resources.resource_filename(__name__, 'htdocs'))]
 
     # IRequestHandler methods
     def match_request(self, req):
-	import re
-        #match = re.match(r'/cruisecontrol(?:/(.*))?$', req.path_info)
-        #match = re.match(r'/cruisecontrol(?:/?\?log=|/?)(.*)$', req.path_info)
+        import re
         match = re.match(r'/cruisecontrol(?:/?\?log=|/?)(.*)$', req.path_info)
-        #match = re.match(r'/cruisecontrol(?:/?\?log=(.*))?$', req.path_info)
         if match:
             if match.group(1):
                 if match.group(1) != '':
-		    req.args['log'] = match.group(1)
-	    if req.args.get('log','') == '':
-	    	req.args['log'] = 'overview'
+                    req.args['log'] = match.group(1)
+            if req.args.get('log','') == '':
+                req.args['log'] = 'overview'
             return 1
 
     def getBuilds(self, ccpath, ccstatus):
@@ -154,9 +103,7 @@ class CruiseControlPlugin(Component):
             for _mod in modlist:
                 build = self.createBuildInfo(_mod)
                 builds.append(build)
-                #print build
-                     
-            #builds.sort(cmp=lambda x,y: cmp(x['datetimeStr'], y['datetimeStr']))
+
             builds.sort()
             builds.reverse()
             return builds
@@ -175,63 +122,63 @@ class CruiseControlPlugin(Component):
 
             builds = self.getBuilds(self.config.get('cruisecontrol', 'ccpath') + '/', self.config.get('cruisecontrol', 'buildstatusfile'))
             for b in builds:
-		if time.mktime(b['datetime']) < start:
-			return
+                if time.mktime(b['datetime']) < start:
+                    return
                 if time.mktime(b['datetime']) < stop:
-	               	href = 'cruisecontrol/' + b['id']
-			title = 'CruiseControl Build:' + b['label']
-			date = time.mktime(b['datetime'])
-			author = 'unknown'
-			from trac.util import format_datetime
-			if b['successful']:
-				message = 'Build was succesful on '
-				kind = 'ccbuild-successful'
-			else:
-				message = 'Build failed on '
-				kind = 'ccbuild-failed'
-			message = message + format_datetime(b['datetime'])
+                    href = 'cruisecontrol/' + b['id']
+                    title = 'CruiseControl Build:' + b['label']
+                    date = time.mktime(b['datetime'])
+                    author = 'unknown'
+                    from trac.util import format_datetime
+                    if b['successful']:
+                        message = 'Build was succesful on '
+                        kind = 'ccbuild-successful'
+                    else:
+                        message = 'Build failed on '
+                        kind = 'ccbuild-failed'
+                    message = message + format_datetime(b['datetime'])
 
-       		       	yield (kind, href, title, date, author, message)
+                    yield (kind, href, title, date, author, message)
 
 
     def process_request(self, req):
         add_stylesheet(req, 'traccc/traccc.css')
 
         cc_id = req.args.get('log', 'overview').replace('log','',1)
-	self.env.log.debug(cc_id)
+        self.env.log.debug(cc_id)
         req.hdf['title'] = 'CruiseControl'
         req.hdf['cc.baseLink'] = self.env.href.cruisecontrol()
 
-        ccpath = self.config.get('cruisecontrol', 'ccpath') + '/'
-        ccstatus = self.config.get('cruisecontrol', 'buildstatusfile')
+        if 'cruisecontrol' in self.config.sections():
+            ccpath = self.config.get('cruisecontrol', 'ccpath') + '/'
+            ccstatus = self.config.get('cruisecontrol', 'buildstatusfile')
 
-	if cc_id == 'overview':
+            if cc_id == 'overview':
                 f = urllib.urlopen(urllib.pathname2url(ccpath + ccstatus))
                 req.hdf['cc.buildstatus'] = f.read()
                 req.hdf['cc.builds'] = self.getBuilds(ccpath, ccstatus)
-                template = req.hdf.parse(self.cc_cs)
-                return template, None
-        else:
-            req.hdf['cc_id'] = cc_id
-
-            try:
-                import libxml2
-                import libxslt
-            except ImportError:
-                from trac import util
-                raise util.TracError('libxml and libxslt is not installed.');
+                return 'traccc_overview.cs', None
             else:
-                filename = 'log' + cc_id + '.xml' #TODO: compressed?
-                build = self.createBuildInfo(filename)
-                req.hdf['cc.build'] = build
-                styledoc = libxml2.parseFile(self.config.get('cruisecontrol', 'xslfile'))
-                style = libxslt.parseStylesheetDoc(styledoc)
-                doc = libxml2.parseFile(ccpath + filename)
-                result = style.applyStylesheet(doc, None)
-                req.hdf['cc.html_result'] = Markup(to_unicode(style.saveResultToString(result)))
-                style.freeStylesheet()
-                doc.freeDoc()
-                result.freeDoc()
+                req.hdf['cc_id'] = cc_id
 
-            template = req.hdf.parse(self.cc_details_cs)
-            return template, None
+                try:
+                    import libxml2
+                    import libxslt
+                except ImportError:
+                    raise TracError('libxml and libxslt is not installed.');
+                else:
+                    filename = 'log' + cc_id + '.xml' #TODO: compressed?
+                    build = self.createBuildInfo(filename)
+                    req.hdf['cc.build'] = build
+                    styledoc = libxml2.parseFile(self.config.get('cruisecontrol', 'xslfile'))
+                    style = libxslt.parseStylesheetDoc(styledoc)
+                    doc = libxml2.parseFile(ccpath + filename)
+                    result = style.applyStylesheet(doc, None)
+                    req.hdf['cc.html_result'] = Markup(to_unicode(style.saveResultToString(result)))
+                    style.freeStylesheet()
+                    doc.freeDoc()
+                    result.freeDoc()
+
+                    return 'traccc_details.cs', None
+
+        raise TracError('TracCC has not been properly configured.')
