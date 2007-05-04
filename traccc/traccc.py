@@ -128,7 +128,7 @@ class CruiseControlPlugin(Component):
                 if time.mktime(b['datetime']) < start:
                     return
                 if time.mktime(b['datetime']) < stop:
-                    href = 'cruisecontrol/' + b['id']
+                    href = req.hdf['base_host'] + self.env.href.cruisecontrol() + '/' + b['id']
                     title = 'CruiseControl Build:' + b['label']
                     date = time.mktime(b['datetime'])
                     author = 'unknown'
