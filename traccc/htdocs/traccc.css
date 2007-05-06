@@ -1,3 +1,21 @@
+#content.traccc table {
+  margin: 0px;
+}
+
+#content.traccc table.testresults tbody tr th.failed, #content.traccc table.ccbuilds tbody tr th.failed {background-image: url(ccerror.gif) !important; background-repeat: no-repeat; background-position: 10px 5px;}
+
+#content.traccc table.testresults tbody tr th.success, #content.traccc table.ccbuilds tbody tr th.success {background-image: url(ccsuccess.gif) !important; background-repeat: no-repeat; background-position: 10px 5px;}
+
+#content.traccc table.code tbody tr.info td {
+  background-color: #DDFFDD;
+}
+
+#content.traccc table.code tbody tr.error td {
+  background-color: ##FFDDDD;
+}
+
+
+
 .white { color:#FFFFFF }
 
 .index { background-color:#FFFFFF }
