@@ -19,7 +19,10 @@
 
 from trac.core import *
 from trac.web.chrome import INavigationContributor, ITemplateProvider, add_stylesheet
-from trac.Timeline import ITimelineEventProvider
+try:
+    from trac.timeline import ITimelineEventProvider
+except ImportError:
+    from trac.Timeline import ITimelineEventProvider
 from trac.web.main import IRequestHandler
 from trac.util import Markup
 from trac.perm import IPermissionRequestor, PermissionSystem
