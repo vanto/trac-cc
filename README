@@ -1,0 +1,53 @@
+========= CruiseControl Plugin for Trac =========
+ A plugin to integrate Cruise Control into Trac
+=================================================
+
+== Goals ==
+Replace the existing Cruise Control reporting application by a Trac plugin.
+
+== Features ==
+ * Gives an overview of builds and results ([attachment:trac-cc_main.png Screenshot]).
+ * Displays collected build logs ([attachment:trac-cc_details.png Screenshot]).
+ * Builds appear in the time line ([attachment:trac-cc_timeline.png Screenshot]).
+
+== Status ==
+Even though this plugin is developed straight forward, it works pretty fine. Consider it BETA(tm) quality :)
+The current version is 0.1.3
+
+== License ==
+The CruiseControl Plugin is licensed under GPL
+
+== Requirements ==
+ * Trac (>= 0.9.3, < 0.11) 
+ * CruiseControl (>= 2.2.1)
+ * libxml2 and libxslt with their Python bindings
+
+== Download ==
+See https://oss.werkbold.de/trac-cc/downloads
+
+== Source Control ==
+See http://github.com/vanto/trac-cc/tree
+
+== Planned Features ==
+ * Remove dependency on libxml2/libxslt
+ * Multi project support
+ * (Build data should be pushed by a cruisecontrol publisher via REST into Trac - see [http://www.magpiebrain.com/archives/2005/07/03/cruiseandtrac Sam Newmans REST-API approach].)
+ * ...
+
+== Known Problems ==
+ * If the build details don't contain modification sets, try the attached xsl-stylesheets.
+ * If you install traccc on Windows and/or globally with easy_install, the custom css and images may not be found.  A very hacky and totally wrong workaround is found in Ticket #13.
+
+== Author ==
+Tammo van Lessen, http://www.taval.de
+
+== Contributors ==
+Steffen Pingel, Don Fike, Nicolas Ternisien, Nathan Kidd, ...
+
+== Mailing list ==
+For feedback and discussions, please subscribe to the TracCC mailing list.
+
+http://groups.google.com/group/traccc-users
+
+== Wishes / Ideas ==
+Please file a [http://oss.werkbold.de/trac-cc/newticket Ticket].
